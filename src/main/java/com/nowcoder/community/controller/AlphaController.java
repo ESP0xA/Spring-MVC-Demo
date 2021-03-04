@@ -1,7 +1,7 @@
 package com.nowcoder.community.controller;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +13,7 @@ import java.util.Enumeration;
 @RequestMapping("/alpha")
 public class AlphaController {
 
+    // HttpServletRequest 和 HttpServletResponse对象分别获取浏览器请求数据和服务器返回数据
 
     @RequestMapping("/http")
     // 没有返回值是因为 httpResponse 对象可以直接向浏览器输出数据，不需要依赖返回值
@@ -48,4 +49,29 @@ public class AlphaController {
             e.printStackTrace();
         }
     }
+
+    // 比HttpServletRequest和HttpServletResponse更简便的方式获取数据
+
+    // GET请求
+
+    // 参数写在url参数值中
+    @RequestMapping(path = "/students", method = RequestMethod.GET) // 指定get请求
+    @ResponseBody
+    // 可以直接在方法括号中写上请求参数的参数名，DispatcherServlet会自动匹配传参: (int current, int limit)
+    public String getStudent(@RequestParam(name = "current", required = false, defaultValue = "1") int current,
+                             @RequestParam(name = "limit", required = false, defaultValue = "10") int limit) {
+        System.out.println(current);
+        System.out.println(limit);
+        return "some students";
+    }
+
+    // 参数写在url路径中
+    @RequestMapping(path = "/student/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public String getStudent(@PathVariable("id") int id) {
+        System.out.println(id);
+        return "a student";
+    }
+
+
 }
