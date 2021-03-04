@@ -1,7 +1,9 @@
 package com.nowcoder.community.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -82,6 +84,31 @@ public class AlphaController {
         System.out.println(name);
         System.out.println(age);
         return "success!";
+    }
+
+    // 向浏览器响应HTML数据（模板）的两种方法: 返回ModelAndView或View
+
+    @RequestMapping(path = "/teacher", method = RequestMethod.GET)
+    // 不加@ResponseBody注解默认返回html
+    // ModelAndView表示Controller给DispatcherServlet返回Model和View两种数据
+    public ModelAndView getTeacher() {
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.addObject("name", "张三");
+        modelAndView.addObject("age", 30);
+        // 模板的路径和名字(从templates起始)
+        modelAndView.setViewName("/demo/view");  // thymeleaf 默认模板后缀为html，所以这里不用写后缀
+        return modelAndView;
+    }
+
+    @RequestMapping(path = "/school", method = RequestMethod.GET)
+    // Controller给DispatcherServlet返回Model，而View数据直接返回
+    public String getSchool(Model model) {              // DispatcherServlet在调用方法时，自动实例化model对象并且传进方法中
+                                                        // DispatcherServlet持有model这个bean的引用，所以在方法中给model注入数据
+                                                        // DispatcherServlet可以得到
+        model.addAttribute("name", "北京大学");
+        model.addAttribute("age", 122);
+
+        return "/demo/view";    // 返回一个路径
     }
 
 }
