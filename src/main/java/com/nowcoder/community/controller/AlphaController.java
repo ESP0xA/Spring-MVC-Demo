@@ -73,5 +73,15 @@ public class AlphaController {
         return "a student";
     }
 
+    // POST请求
+
+    @RequestMapping(path = "/student",method = RequestMethod.POST)
+    @ResponseBody
+    // 直接在方法括号内写入和html中属性值对应的参数，完成POST请求中参数的传递（front-end to back-end）
+    public String saveStudent(String name, int age) {
+        System.out.println(name);
+        System.out.println(age);
+        return "success!";
+    }
 
 }
