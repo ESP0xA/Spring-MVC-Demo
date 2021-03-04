@@ -1,5 +1,6 @@
 package com.nowcoder.community.controller;
 
+import org.apache.tomcat.util.digester.ArrayStack;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Enumeration;
+import java.util.*;
 
 @Controller
 @RequestMapping("/alpha")
@@ -109,6 +110,51 @@ public class AlphaController {
         model.addAttribute("age", 122);
 
         return "/demo/view";    // 返回一个路径
+    }
+
+    // 向浏览器响应json数据（通常在异步请求中）
+
+    // java对象 -> js对象(浏览器使用)                    X
+    // java对象 -> json字符串 -> js对象(浏览器使用)       √
+
+    // 返回一个Map<String, Object>
+    @RequestMapping(path = "/employee", method = RequestMethod.GET)
+    // 为了返回Json对象，需要加上@ResponseBody
+    @ResponseBody
+    // DispatcherServlet在调用这个方法的时候，会自动将Map<String, Object>类型返回值转换为Json字符串
+    public Map<String, Object> getEmp() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("name", "张三");
+        map.put("age", 23);
+        map.put("salary", 8000.00);
+        return map;
+    }
+
+    // 返回一个List<Map<String, Object>>
+    @RequestMapping(path = "/employees", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Map<String, Object>> getEmps() {
+        List<Map<String, Object>> list = new ArrayList<>();
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("name", "张三");
+        map.put("age", 23);
+        map.put("salary", 8000.00);
+        list.add(map);
+
+        map = new HashMap<>();
+        map.put("name", "李四");
+        map.put("age", 24);
+        map.put("salary", 9000.00);
+        list.add(map);
+
+        map = new HashMap<>();
+        map.put("name", "王五");
+        map.put("age", 25);
+        map.put("salary", 10000.00);
+        list.add(map);
+
+        return list;
     }
 
 }
