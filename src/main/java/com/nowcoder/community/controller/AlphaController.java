@@ -78,6 +78,7 @@ public class AlphaController {
 
     // POST请求
 
+    // 浏览器访问html目录下的student.html文件，所以应该访问具体地址是：http://localhost:8080/community/html/student.html
     @RequestMapping(path = "/student",method = RequestMethod.POST)
     @ResponseBody
     // 直接在方法括号内写入和html中属性值对应的参数，完成POST请求中参数的传递（front-end to back-end）
